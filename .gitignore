@@ -484,3 +484,5 @@ $RECYCLE.BIN/
 *.swp
 API/ordogkatlan.db
 API/appsettings.Development.json
+/API/ordogkatlan.db-shm
+/API/ordogkatlan.db-wal
