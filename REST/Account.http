@@ -6,7 +6,7 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6I
 
 ###
 
-
+# Register
 POST {{API_HostAddress}}/register
 Content-Type: application/json; charset=utf-8
 
@@ -15,24 +15,17 @@ Content-Type: application/json; charset=utf-8
 }
 ###
 
-POST {{API_HostAddress}}
+# Login
+# @name postLogin
+GET {{API_HostAddress}}/c3c4477f-76a6-492f-9a53-82c5ad88f803
 Content-Type: application/json; charset=utf-8
 
-{
-  "email": "bob1@test.com",
-  "password": "Pa$$w0rd"
-}
 ###
+@token = {{postLogin.response.body.token}}
 
-
-
-POST {{API_HostAddress}}/register
+# Get account info
+GET {{API_HostAddress}}
 Content-Type: application/json; charset=utf-8
+Authorization: Bearer {{token}}
 
-{
-  "email": "bob@test.com",
-  "password": "Password+1",
-  "displayName": "Bob",
-  "username": "bob1"
-}
 ###

@@ -7,4 +7,6 @@ public class User : IdentityUser
     public string? DisplayName { get; set; }
 
     public Guid? Token { get; set; }
+
+    public DateTime TokenValidationDateTime { get; set; }
 }
