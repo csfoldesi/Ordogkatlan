@@ -34,13 +34,15 @@ public class Add
                 {
                     UserName = request.Email,
                     Email = request.Email,
-                    Token = Guid.NewGuid()
+                    Token = Guid.NewGuid(),
+                    TokenValidationDateTime = DateTime.UtcNow.AddDays(1)
                 };
                 result = await _userManager.CreateAsync(user);
             }
             else
             {
                 user.Token = Guid.NewGuid();
+                user.TokenValidationDateTime = DateTime.UtcNow.AddDays(1);
                 result = await _userManager.UpdateAsync(user);
             }
             if (result.Succeeded)

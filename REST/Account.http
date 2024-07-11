@@ -11,7 +11,7 @@ POST {{API_HostAddress}}/register
 Content-Type: application/json; charset=utf-8
 
 {
-  "email": "csabus@gmail.com"
+  "email": "csabus@csabus.hu"
 }
 ###
 

@@ -2,7 +2,6 @@
 using API.Services;
 using Application.Account;
 using Domain;
-using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -12,8 +11,6 @@ using System.Security.Claims;
 
 namespace API.Controllers;
 
-[ApiController]
-[Route("api/[controller]")]
 public class AccountController : BaseApiController
 {
     private readonly UserManager<User> _userManager;

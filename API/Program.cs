@@ -1,4 +1,5 @@
 using API.Extensions;
+using API.Middleware;
 using Domain;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -30,6 +31,8 @@ using (var scope = app.Services.CreateScope())
         logger.LogError(ex, "An error occured durign migration");
     }
 }
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

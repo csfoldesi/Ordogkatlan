@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence;
 
@@ -10,9 +11,11 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240710175833_AddGenre")]
+    partial class AddGenre
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.6");
@@ -39,7 +42,13 @@ namespace Persistence.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Thumbnail")
+                    b.Property<int>("Duration")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("StageId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("Time")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Title")
@@ -47,6 +56,8 @@ namespace Persistence.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("StageId");
 
                     b.ToTable("Programs");
                 });
@@ -68,38 +79,6 @@ namespace Persistence.Migrations
                     b.HasIndex("VillageId");
 
                     b.ToTable("Stages");
-                });
-
-            modelBuilder.Entity("Domain.TimeTable", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int?>("Duration")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime?>("EndTime")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ProgramId")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("StageId")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("StartTime")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProgramId");
-
-                    b.HasIndex("StageId");
-
-                    b.ToTable("TimeTables");
                 });
 
             modelBuilder.Entity("Domain.User", b =>
@@ -317,6 +296,15 @@ namespace Persistence.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Domain.Program", b =>
+                {
+                    b.HasOne("Domain.Stage", "Stage")
+                        .WithMany()
+                        .HasForeignKey("StageId");
+
+                    b.Navigation("Stage");
+                });
+
             modelBuilder.Entity("Domain.Stage", b =>
                 {
                     b.HasOne("Domain.Village", "Village")
@@ -324,25 +312,6 @@ namespace Persistence.Migrations
                         .HasForeignKey("VillageId");
 
                     b.Navigation("Village");
-                });
-
-            modelBuilder.Entity("Domain.TimeTable", b =>
-                {
-                    b.HasOne("Domain.Program", "Program")
-                        .WithMany()
-                        .HasForeignKey("ProgramId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Stage", "Stage")
-                        .WithMany()
-                        .HasForeignKey("StageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Program");
-
-                    b.Navigation("Stage");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

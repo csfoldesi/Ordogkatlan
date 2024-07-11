@@ -1,0 +1,21 @@
+@API_HostAddress = http://localhost:5143/api
+
+# Login
+# @name postLogin
+GET {{API_HostAddress}}/account/c3c4477f-76a6-492f-9a53-82c5ad88f803
+Content-Type: application/json; charset=utf-8
+
+###
+@token = {{postLogin.response.body.token}}
+
+
+# Download program
+POST {{API_HostAddress}}/program
+Content-Type: application/json; charset=utf-8
+Authorization: Bearer {{token}}
+
+###
+
+GET https://ordogkatlan.hu/2024/az-ongyilkos?ajax=1
+Accept: application/json
+Origin: http://localhost:3000
