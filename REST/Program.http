@@ -16,6 +16,13 @@ Authorization: Bearer {{token}}
 
 ###
 
+# List program
+GET {{API_HostAddress}}/program
+Content-Type: application/json; charset=utf-8
+
+###
+
+
 GET https://ordogkatlan.hu/2024/az-ongyilkos?ajax=1
 Accept: application/json
 Origin: http://localhost:3000

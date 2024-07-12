@@ -1,4 +1,5 @@
 ﻿using Application.Account;
+using Application.Core;
 using Application.Interfaces;
 using Infrastructure.Email;
 using Microsoft.EntityFrameworkCore;
@@ -39,8 +40,8 @@ public static class ApplicationServiceExtensions
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Add.Handler).Assembly));
         services.AddScoped<IEmailAccessor, EmailAccessor>();
 
-        /*services.AddAutoMapper(typeof(MappingProfiles).Assembly);
-        services.AddScoped<IUserAccessor, UserAccessor>();
+        services.AddAutoMapper(typeof(MappingProfiles).Assembly);
+        /*services.AddScoped<IUserAccessor, UserAccessor>();
         services.AddScoped<IPhotoAccessor, PhotoAccessor>();*/
 
         /*services.AddFluentValidationAutoValidation();

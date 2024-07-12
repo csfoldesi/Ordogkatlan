@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace API.Controllers;
@@ -15,5 +16,13 @@ public class ProgramController : BaseApiController
             }
         );
         return Ok();
+    }
+
+    [HttpGet]
+    [AllowAnonymous]
+    public async Task<IActionResult> List()
+    {
+        var programList = await Mediator.Send(new Application.Program.List.Query { });
+        return Ok(programList);
     }
 }

@@ -9,4 +9,6 @@ public class Program
     public string? Description { get; set; }
 
     public string? Thumbnail { get; set; }
+
+    public List<TimeTable> TimeTables { get; set; } = new List<TimeTable>();
 }
