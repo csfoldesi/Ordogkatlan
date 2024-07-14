@@ -17,7 +17,7 @@ Content-Type: application/json; charset=utf-8
 
 # Login
 # @name postLogin
-GET {{API_HostAddress}}/c3c4477f-76a6-492f-9a53-82c5ad88f803
+GET {{API_HostAddress}}/1951150A-1A00-4427-8910-FA8390FF8CBD
 Content-Type: application/json; charset=utf-8
 
 ###

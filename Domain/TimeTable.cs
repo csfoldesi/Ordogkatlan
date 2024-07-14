@@ -13,4 +13,6 @@ public class TimeTable
     public int? Duration { get; set; }
 
     public required Stage Stage { get; set; }
+
+    public ICollection<UserTimetable> UserTimetables { get; set; } = [];
 }

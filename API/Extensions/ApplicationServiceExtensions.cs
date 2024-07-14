@@ -2,6 +2,7 @@
 using Application.Core;
 using Application.Interfaces;
 using Infrastructure.Email;
+using Infrastructure.Security;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
@@ -41,8 +42,8 @@ public static class ApplicationServiceExtensions
         services.AddScoped<IEmailAccessor, EmailAccessor>();
 
         services.AddAutoMapper(typeof(MappingProfiles).Assembly);
-        /*services.AddScoped<IUserAccessor, UserAccessor>();
-        services.AddScoped<IPhotoAccessor, PhotoAccessor>();*/
+        services.AddScoped<IUserAccessor, UserAccessor>();
+        /*services.AddScoped<IPhotoAccessor, PhotoAccessor>();*/
 
         /*services.AddFluentValidationAutoValidation();
         services.AddValidatorsFromAssemblyContaining<Create>();*/

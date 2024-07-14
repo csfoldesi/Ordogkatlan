@@ -2,7 +2,7 @@
 
 # Login
 # @name postLogin
-GET {{API_HostAddress}}/account/c3c4477f-76a6-492f-9a53-82c5ad88f803
+GET {{API_HostAddress}}/account/1951150A-1A00-4427-8910-FA8390FF8CBD
 Content-Type: application/json; charset=utf-8
 
 ###
@@ -17,7 +17,26 @@ Authorization: Bearer {{token}}
 ###
 
 # List program
+GET {{API_HostAddress}}/program
+
+###
+
+# List program
 GET {{API_HostAddress}}/program?pageNumber=0&pageSize=20&searchText=cseh+tamás
+
+###
+
+# List My program
+GET {{API_HostAddress}}/program/my?pageNumber=0&pageSize=20
+Authorization: Bearer {{token}}
+
+###
+
+
+# Select/deselect program
+POST {{API_HostAddress}}/program/301eb61e-89b5-4d5b-a95a-7da5923a628e/select
+Content-Type: application/json; charset=utf-8
+Authorization: Bearer {{token}}
 
 ###
 

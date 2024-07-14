@@ -1,5 +1,6 @@
 ﻿using Application.Program;
 using AutoMapper;
+using Domain;
 
 namespace Application.Core;
 
@@ -7,7 +8,7 @@ public class MappingProfiles : Profile
 {
     public MappingProfiles()
     {
-        CreateMap<Domain.TimeTable, ProgramListItemDTO>()
+        CreateMap<TimeTable, ProgramListItemDTO>()
             .ForMember(d => d.Id, o => o.MapFrom(s => s.Program.Id))
             .ForMember(d => d.PerformanceId, o => o.MapFrom(s => s.Id))
             .ForMember(d => d.Date, o => o.MapFrom(s => s.StartTime!.Value.Date))

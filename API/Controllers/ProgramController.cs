@@ -25,4 +25,18 @@ public class ProgramController : BaseApiController
         var result = await Mediator.Send(new Application.Program.List.Query { Params = param });
         return HandlePagedResult(result);
     }
+
+    [HttpGet("my")]
+    public async Task<IActionResult> ListMy([FromQuery] ProgramParams param)
+    {
+        var result = await Mediator.Send(new Application.Program.MyList.Query { Params = param });
+        return HandlePagedResult(result);
+    }
+
+    [HttpPost("{id}/select")]
+    public async Task<IActionResult> Select(Guid id)
+    {
+        var result = await Mediator.Send(new Application.Program.Select.Command { Id = id });
+        return HandleResult(result);
+    }
 }

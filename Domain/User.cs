@@ -9,4 +9,6 @@ public class User : IdentityUser
     public Guid? Token { get; set; }
 
     public DateTime TokenValidationDateTime { get; set; }
+
+    public ICollection<UserTimetable> Timetable { get; set; } = [];
 }
