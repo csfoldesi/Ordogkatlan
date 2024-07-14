@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Application.Program;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
 
 namespace API.Controllers;
 
@@ -20,9 +20,9 @@ public class ProgramController : BaseApiController
 
     [HttpGet]
     [AllowAnonymous]
-    public async Task<IActionResult> List()
+    public async Task<IActionResult> List([FromQuery] ProgramParams param)
     {
-        var programList = await Mediator.Send(new Application.Program.List.Query { });
-        return Ok(programList);
+        var result = await Mediator.Send(new Application.Program.List.Query { Params = param });
+        return HandlePagedResult(result);
     }
 }

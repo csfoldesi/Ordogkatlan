@@ -17,8 +17,7 @@ Authorization: Bearer {{token}}
 ###
 
 # List program
-GET {{API_HostAddress}}/program
-Content-Type: application/json; charset=utf-8
+GET {{API_HostAddress}}/program?pageNumber=0&pageSize=20&searchText=cseh+tamás
 
 ###
 
