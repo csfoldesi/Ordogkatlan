@@ -23,7 +23,7 @@ public static class ApplicationServiceExtensions
             options.UseSqlite(configuration.GetConnectionString("DefaultConnection")!);
         });
 
-        /*services.AddCors(options =>
+        services.AddCors(options =>
         {
             options.AddPolicy(
                 "CorsPolicy",
@@ -33,10 +33,10 @@ public static class ApplicationServiceExtensions
                         .AllowAnyMethod()
                         .AllowAnyHeader()
                         .AllowCredentials()
-                        .WithOrigins("http://localhost:3000");
+                        .WithOrigins("http://localhost:8081");
                 }
             );
-        });*/
+        });
 
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Add.Handler).Assembly));
         services.AddScoped<IEmailAccessor, EmailAccessor>();

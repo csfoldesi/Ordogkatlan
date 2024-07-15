@@ -18,11 +18,18 @@ Authorization: Bearer {{token}}
 
 # List program
 GET {{API_HostAddress}}/program
+Origin: http://localhost:8081/
+
+###
+
+GET http://192.168.0.31:5143/api/program?pageNumber=0&pageSize=3
+Origin: http://localhost:8081
 
 ###
 
 # List program
 GET {{API_HostAddress}}/program?pageNumber=0&pageSize=20&searchText=cseh+tamás
+Origin: http://localhost:8081
 
 ###
 
@@ -44,3 +51,6 @@ Authorization: Bearer {{token}}
 GET https://ordogkatlan.hu/2024/az-ongyilkos?ajax=1
 Accept: application/json
 Origin: http://localhost:3000
+
+###
+
