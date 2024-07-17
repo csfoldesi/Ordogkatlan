@@ -2,7 +2,7 @@
 
 namespace Application.Program;
 
-public class ProgramParams : PagingParams
+public class Params : PagingParams
 {
     public DateTime? Date { get; set; }
 

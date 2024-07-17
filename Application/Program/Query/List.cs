@@ -1,16 +1,17 @@
 ﻿using Application.Core;
+using Application.Program.DTO;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
 using Persistence;
 
-namespace Application.Program;
+namespace Application.Program.Query;
 
 public class List
 {
     public class Query : IRequest<Result<PagedList<ProgramListItemDTO>>>
     {
-        public required ProgramParams Params { get; set; }
+        public required Params Params { get; set; }
     }
 
     public class Handler : IRequestHandler<Query, Result<PagedList<ProgramListItemDTO>>>

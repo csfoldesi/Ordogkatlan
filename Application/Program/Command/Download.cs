@@ -1,10 +1,11 @@
-﻿using Domain;
+﻿using Application.Program.DTO;
+using Domain;
 using MediatR;
 using Persistence;
 using System.Globalization;
 using System.Net.Http.Json;
 
-namespace Application.Program;
+namespace Application.Program.Command;
 
 public class Download
 {
@@ -95,7 +96,7 @@ public class Download
                     if (stage == null)
                     {
                         var village = _dataContext.Villages.FirstOrDefault(
-                            x => ("/" + x.Id) == item.village!.href
+                            x => "/" + x.Id == item.village!.href
                         );
                         stage = new Domain.Stage
                         {
@@ -122,7 +123,7 @@ public class Download
                     _dataContext.SaveChanges();
                 }
 
-                var timeTable = new Domain.TimeTable
+                var timeTable = new TimeTable
                 {
                     Program = program,
                     StartTime = startTime,

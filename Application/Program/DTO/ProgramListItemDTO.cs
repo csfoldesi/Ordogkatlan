@@ -1,4 +1,4 @@
-﻿namespace Application.Program;
+﻿namespace Application.Program.DTO;
 
 public class ProgramListItemDTO
 {

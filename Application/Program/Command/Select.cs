@@ -4,7 +4,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
-namespace Application.Program;
+namespace Application.Program.Command;
 
 public class Select
 {
