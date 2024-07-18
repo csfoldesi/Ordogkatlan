@@ -38,13 +38,13 @@ public class List
             {
                 query = query.Where(x => x.Date == request.Params.Date.Value);
             }
-            if (!string.IsNullOrEmpty(request.Params.Village))
+            if (request.Params.Village.Count() > 0)
             {
-                query = query.Where(x => x.VillageId == request.Params.Village);
+                query = query.Where(x => request.Params.Village.Contains(x.VillageId));
             }
-            if (!string.IsNullOrEmpty(request.Params.Stage))
+            if (request.Params.Stage.Count() > 0)
             {
-                query = query.Where(x => x.StageId == "/" + request.Params.Stage);
+                query = query.Where(x => request.Params.Stage.Contains(x.StageId.Substring(1)));
             }
             if (!string.IsNullOrEmpty(request.Params.SearchText))
             {

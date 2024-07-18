@@ -33,7 +33,7 @@ public static class ApplicationServiceExtensions
                         .AllowAnyMethod()
                         .AllowAnyHeader()
                         .AllowCredentials()
-                        .WithOrigins("http://localhost:8081");
+                        .WithOrigins("http://localhost:3000");
                 }
             );
         });

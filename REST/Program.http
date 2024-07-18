@@ -28,7 +28,13 @@ Origin: http://localhost:8081
 ###
 
 # List program
-GET {{API_HostAddress}}/program?pageNumber=0&pageSize=20&searchText=cseh+tamás
+GET {{API_HostAddress}}/program?pageNumber=0&pageSize=20&stage=petriter&stage=terasz
+Origin: http://localhost:8081
+
+###
+
+# Get catalog
+GET {{API_HostAddress}}/program/catalog
 Origin: http://localhost:8081
 
 ###
