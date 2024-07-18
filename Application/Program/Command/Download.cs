@@ -4,6 +4,8 @@ using MediatR;
 using Persistence;
 using System.Globalization;
 using System.Net.Http.Json;
+using System.Text.RegularExpressions;
+using System.Web;
 
 namespace Application.Program.Command;
 
@@ -92,15 +94,17 @@ public class Download
                 Domain.Stage? stage = null;
                 if (item.stage != null)
                 {
-                    stage = _dataContext.Stages.FirstOrDefault(x => x.Id == item.stage!.href);
+                    stage = _dataContext.Stages.FirstOrDefault(
+                        x => x.Id == item.stage!.href.Substring(1)
+                    );
                     if (stage == null)
                     {
                         var village = _dataContext.Villages.FirstOrDefault(
-                            x => "/" + x.Id == item.village!.href
+                            x => x.Id == item.village!.href.Substring(1)
                         );
                         stage = new Domain.Stage
                         {
-                            Id = item.stage!.href,
+                            Id = item.stage!.href.Substring(1),
                             Name = item.stage!.name,
                             Village = village!
                         };
@@ -116,7 +120,7 @@ public class Download
                     {
                         Id = id!,
                         Title = item.title!,
-                        Description = description,
+                        Description = StripHtml(description ?? ""),
                         Thumbnail = item.thumbnail?.web
                     };
                     _dataContext.Programs.Add(program);
@@ -134,6 +138,13 @@ public class Download
                 _dataContext.TimeTables.Add(timeTable);
                 _dataContext.SaveChanges();
             }
+        }
+
+        private string StripHtml(string text)
+        {
+            string result = Regex.Replace(text, "<.*?>", string.Empty);
+            result = HttpUtility.HtmlDecode(result);
+            return result.Trim();
         }
     }
 }

@@ -44,7 +44,7 @@ public class List
             }
             if (request.Params.Stage.Count() > 0)
             {
-                query = query.Where(x => request.Params.Stage.Contains(x.StageId.Substring(1)));
+                query = query.Where(x => request.Params.Stage.Contains(x.StageId));
             }
             if (!string.IsNullOrEmpty(request.Params.SearchText))
             {
