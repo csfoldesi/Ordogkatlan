@@ -5,6 +5,8 @@ import Contact from "../../features/contact/Contact";
 import NotFound from "../../features/errors/NotFound";
 import RequireAuth from "./RequireAuth";
 import HomePage from "../../features/home/HomePage";
+import Register from "../../features/account/register";
+import Login from "../../features/account/login";
 
 export const routes: RouteObject[] = [
   {
@@ -18,6 +20,8 @@ export const routes: RouteObject[] = [
           { path: "contact", element: <Contact /> },
         ],
       },
+      { path: "register", element: <Register /> },
+      { path: "login/:token", element: <Login /> },
       { path: "not-found", element: <NotFound /> },
       { path: "*", element: <Navigate replace to="/not-found" /> },
       { index: true, element: <HomePage /> },

@@ -2,8 +2,17 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import { PaginatedResult } from "../models/pagination";
 import { Catalog } from "../models/catalog";
 import { ProgramDTO } from "../models/program";
+import { RegisterDTO } from "../models/register";
+import { UserDTO } from "../models/user";
+import { store } from "../stores/store";
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
+
+axios.interceptors.request.use((config) => {
+  const token = store.commonStore.token;
+  if (token) config.headers.Authorization = `Bearer ${token}`;
+  return config;
+});
 
 axios.interceptors.response.use(
   async (response) => {
@@ -64,9 +73,16 @@ const Programs = {
     axios.get<PaginatedResult<ProgramDTO[]>>("/program", { params }).then(responseBody),
 };
 
+const Account = {
+  register: (data: RegisterDTO) => requests.post<void>("/account/register", data),
+  login: (token: string) => requests.get<UserDTO>("/account/" + token),
+  current: () => requests.get<UserDTO>("/account"),
+};
+
 const agent = {
   Catalogs,
   Programs,
+  Account,
 };
 
 export default agent;
