@@ -1,30 +1,40 @@
-﻿using Application.Interfaces;
+﻿using Application.Core;
+using Application.Interfaces;
 using Domain;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace Application.Account;
 
 public class Add
 {
-    public class Command : IRequest<Unit>
+    public class Command : IRequest<Result<Unit>>
     {
         public required string Email { get; set; }
     }
 
-    public class Handler : IRequestHandler<Command, Unit>
+    public class Handler : IRequestHandler<Command, Result<Unit>>
     {
         private readonly UserManager<User> _userManager;
         private readonly IEmailAccessor _emailAccessor;
+        private readonly string _subjectTemplate;
+        private readonly string _bodyTemplate;
 
-        public Handler(UserManager<User> userManager, IEmailAccessor emailAccessor)
+        public Handler(
+            UserManager<User> userManager,
+            IEmailAccessor emailAccessor,
+            IOptions<RegisterEmailSettings> config
+        )
         {
             _userManager = userManager;
             _emailAccessor = emailAccessor;
+            _subjectTemplate = config.Value.SubjectTemplate;
+            _bodyTemplate = config.Value.BodyTemplate;
         }
 
-        public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
+        public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
         {
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Email == request.Email);
             IdentityResult result;
@@ -49,11 +59,15 @@ public class Add
             {
                 var emailResult = await _emailAccessor.SendEmailAsync(
                     request.Email,
-                    "Test",
-                    "UserToken: " + user.Token.ToString()
+                    _subjectTemplate,
+                    string.Format(_bodyTemplate, user.Token.ToString())
                 );
+                if (emailResult)
+                {
+                    return Result<Unit>.Success(Unit.Value);
+                }
             }
-            return Unit.Value;
+            return Result<Unit>.Failure("Az email elküldése nem sikerült");
         }
     }
 }

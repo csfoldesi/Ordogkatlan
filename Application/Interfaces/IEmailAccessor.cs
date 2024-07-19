@@ -2,5 +2,5 @@
 
 public interface IEmailAccessor
 {
-    Task<string> SendEmailAsync(string emailAddress, string subject, string body);
+    Task<bool> SendEmailAsync(string emailAddress, string subject, string body);
 }

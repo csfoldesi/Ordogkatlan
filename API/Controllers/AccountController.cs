@@ -32,8 +32,8 @@ public class AccountController : BaseApiController
     [HttpPost("register")]
     public async Task<IActionResult> Register(RegisterDTO registerDto)
     {
-        await Mediator.Send(new Add.Command { Email = registerDto.Email });
-        return Ok();
+        var result = await Mediator.Send(new Add.Command { Email = registerDto.Email });
+        return HandleResult(result);
     }
 
     [AllowAnonymous]
