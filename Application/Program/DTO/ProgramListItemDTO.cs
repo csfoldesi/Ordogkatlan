@@ -27,4 +27,6 @@ public class ProgramListItemDTO
     public required string StageId { get; set; }
 
     public required string StageName { get; set; }
+
+    public bool IsSelected { get; set; }
 }

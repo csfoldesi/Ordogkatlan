@@ -1,8 +1,10 @@
 ﻿using Application.Core;
+using Application.Interfaces;
 using Application.Program.DTO;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace Application.Program.Query;
@@ -18,11 +20,13 @@ public class List
     {
         private readonly DataContext _dataContext;
         private readonly IMapper _mapper;
+        private readonly IUserAccessor _userAccessor;
 
-        public Handler(DataContext dataContext, IMapper mapper)
+        public Handler(DataContext dataContext, IMapper mapper, IUserAccessor userAccessor)
         {
             _dataContext = dataContext;
             _mapper = mapper;
+            _userAccessor = userAccessor;
         }
 
         public async Task<Result<PagedList<ProgramListItemDTO>>> Handle(
@@ -57,13 +61,30 @@ public class List
                 );
             }
 
-            return Result<PagedList<ProgramListItemDTO>>.Success(
-                await PagedList<ProgramListItemDTO>.CreateAsync(
-                    query,
-                    request.Params.PageNumber,
-                    request.Params.PageSize
-                )
+            var pagedList = await PagedList<ProgramListItemDTO>.CreateAsync(
+                query,
+                request.Params.PageNumber,
+                request.Params.PageSize
             );
+
+            var user = await _dataContext.Users.FirstOrDefaultAsync(
+                x => x.Id == _userAccessor.GetUserId(),
+                cancellationToken: cancellationToken
+            );
+            if (user != null)
+            {
+                var userSelectedPrograms = await _dataContext.UserTimeTables
+                    .Where(x => x.UserId == user.Id)
+                    .Select(x => x.TimetableId)
+                    .ToListAsync();
+
+                foreach (var item in pagedList)
+                {
+                    item.IsSelected = userSelectedPrograms.Any(x => x == item.PerformanceId);
+                }
+            }
+
+            return Result<PagedList<ProgramListItemDTO>>.Success(pagedList);
         }
     }
 }
