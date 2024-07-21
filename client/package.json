@@ -16,10 +16,11 @@
     "mobx-react-lite": "^4.0.7",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-infinite-scroll-hook": "^4.1.1",
     "react-router-dom": "^6.25.0",
     "react-scripts": "5.0.1",
     "semantic-ui-css": "^2.5.0",
-    "semantic-ui-react": "^2.1.5",
+    "semantic-ui-react": "^3.0.0-beta.2",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },

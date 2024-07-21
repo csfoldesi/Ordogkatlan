@@ -12,4 +12,5 @@ export interface ProgramDTO {
   villageName: string;
   stageId: string;
   stageName: string;
+  isSelected: boolean;
 }

@@ -71,6 +71,9 @@ const Catalogs = {
 const Programs = {
   list: (params: URLSearchParams) =>
     axios.get<PaginatedResult<ProgramDTO[]>>("/program", { params }).then(responseBody),
+  select: (id: string) => axios.post<void>(`/program/${id}/select`),
+  my: (params: URLSearchParams) =>
+    axios.get<PaginatedResult<ProgramDTO[]>>("/program/my", { params }).then(responseBody),
 };
 
 const Account = {

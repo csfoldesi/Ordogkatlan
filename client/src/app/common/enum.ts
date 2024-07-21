@@ -4,3 +4,9 @@ export enum FormStatus {
   Success,
   Error,
 }
+
+export enum ProgramListType {
+  Now,
+  All,
+  My,
+}

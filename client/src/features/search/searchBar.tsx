@@ -13,17 +13,17 @@ export default observer(function SearchBar() {
 
   const toggleVillage = (villageId: string) => {
     filterStore.selectVillageToggle(villageId);
-    programStore.loadPrograms();
+    programStore.loadPrograms(true);
   };
 
   const toggleStage = (stageId: string) => {
     filterStore.selectStageToggle(stageId);
-    programStore.loadPrograms();
+    programStore.loadPrograms(true);
   };
 
   const dateSelected = (date: string | undefined) => {
     filterStore.selectDate(date);
-    programStore.loadPrograms();
+    programStore.loadPrograms(true);
   };
 
   if (!catalog) {

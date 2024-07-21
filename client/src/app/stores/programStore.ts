@@ -5,9 +5,11 @@ import { store } from "./store";
 import agent from "../api/agent";
 
 export default class ProgramStore {
-  programList: ProgramDTO[] = [];
+  programListMap = new Map<string, ProgramDTO>();
+  groupedProgramList: ProgramDTO[] = [];
   pagination: Pagination | null = null;
   pagingParams = new PagingParams();
+  isLoading = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -17,7 +19,7 @@ export default class ProgramStore {
     this.pagingParams = pagingParams;
   };
 
-  get axiosParams() {
+  get axiosParamsWithFilters() {
     const params = new URLSearchParams();
     params.append("pageNumber", this.pagingParams.pageNumber.toString());
     params.append("pageSize", this.pagingParams.pageSize.toString());
@@ -33,14 +35,63 @@ export default class ProgramStore {
     return params;
   }
 
-  loadPrograms = async () => {
+  get axiosParams() {
+    const params = new URLSearchParams();
+    params.append("pageNumber", this.pagingParams.pageNumber.toString());
+    params.append("pageSize", this.pagingParams.pageSize.toString());
+    return params;
+  }
+
+  get hasNextPage() {
+    return !!this.pagination && this.pagination.currentPage + 1 < this.pagination!.totalPages;
+  }
+
+  loadPrograms = async (clearProgramList = false) => {
     try {
-      const result = await agent.Programs.list(this.axiosParams);
+      if (clearProgramList) {
+        this.setPagingParams(new PagingParams());
+        this.groupedProgramList = [];
+      }
+      const result = await agent.Programs.list(this.axiosParamsWithFilters);
       runInAction(() => {
-        this.programList = result.data;
+        let i = result.pagination.currentPage * result.pagination.itemsPerPage;
+        result.data.forEach((program) => {
+          this.groupedProgramList[i] = program;
+          i++;
+          /*if (!this.programListMap.get(program.performanceId)) {
+            this.programListMap.set(program.performanceId, program);
+            this.groupedProgramList.push(program);
+          }*/
+        });
+        this.pagination = result.pagination;
       });
     } catch (error) {
       console.error(error);
+    }
+  };
+
+  /*loadMyPrograms = async () => {
+    try {
+      const result = await agent.Programs.my(this.axiosParams);
+      runInAction(() => {
+        //this.programList = result.data;
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };*/
+
+  toggleProgramSelect = async (program: ProgramDTO) => {
+    this.isLoading = true;
+    try {
+      await agent.Programs.select(program.performanceId);
+      runInAction(() => {
+        program.isSelected = !program.isSelected;
+      });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      runInAction(() => (this.isLoading = false));
     }
   };
 }

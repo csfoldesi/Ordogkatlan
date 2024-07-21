@@ -1,12 +1,11 @@
 import { createBrowserRouter, Navigate, RouteObject } from "react-router-dom";
 import App from "../layout/App";
-import About from "../../features/About/About";
-import Contact from "../../features/contact/Contact";
 import NotFound from "../../features/errors/NotFound";
 import RequireAuth from "./RequireAuth";
 import HomePage from "../../features/home/HomePage";
 import Register from "../../features/account/register";
 import Login from "../../features/account/login";
+import MyProgram from "../../features/myProgram/MyProgram";
 
 export const routes: RouteObject[] = [
   {
@@ -15,10 +14,7 @@ export const routes: RouteObject[] = [
     children: [
       {
         element: <RequireAuth />,
-        children: [
-          { path: "about", element: <About /> },
-          { path: "contact", element: <Contact /> },
-        ],
+        children: [{ path: "my-program", element: <MyProgram /> }],
       },
       { path: "register", element: <Register /> },
       { path: "login/:token", element: <Login /> },
