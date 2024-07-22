@@ -1,8 +1,8 @@
-import SearchBar from "../search/searchBar";
-import ProgramList from "../program/ProgramList";
 import { ProgramListType } from "../../app/common/enum";
+import SearchBar from "../search/searchBar";
+import ProgramList from "./ProgramList";
 
-export default function HomePage() {
+export default function Program() {
   return (
     <>
       <SearchBar />

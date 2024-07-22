@@ -2,10 +2,11 @@ import { createBrowserRouter, Navigate, RouteObject } from "react-router-dom";
 import App from "../layout/App";
 import NotFound from "../../features/errors/NotFound";
 import RequireAuth from "./RequireAuth";
-import HomePage from "../../features/home/HomePage";
 import Register from "../../features/account/register";
 import Login from "../../features/account/login";
-import MyProgram from "../../features/myProgram/MyProgram";
+import SelectedProgramList from "../../features/program/SelectedProgramList";
+import NowProgramList from "../../features/program/NowProgramList";
+import Program from "../../features/program/Program";
 
 export const routes: RouteObject[] = [
   {
@@ -14,13 +15,14 @@ export const routes: RouteObject[] = [
     children: [
       {
         element: <RequireAuth />,
-        children: [{ path: "my-program", element: <MyProgram /> }],
+        children: [{ path: "selected-program", element: <SelectedProgramList /> }],
       },
+      { path: "program", element: <Program /> },
       { path: "register", element: <Register /> },
       { path: "login/:token", element: <Login /> },
       { path: "not-found", element: <NotFound /> },
       { path: "*", element: <Navigate replace to="/not-found" /> },
-      { index: true, element: <HomePage /> },
+      { index: true, element: <NowProgramList /> },
     ],
   },
 ];

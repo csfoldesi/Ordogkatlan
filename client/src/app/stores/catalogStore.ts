@@ -3,19 +3,29 @@ import { Catalog } from "../models/catalog";
 import agent from "../api/agent";
 import { format } from "date-fns";
 import { Stage } from "../models/stage";
-
-interface DateSelectorSource {
-  key: string;
-  value: string;
-  text: string;
-}
+import { SelectOption } from "../models/selectOption";
+import { store } from "./store";
 
 export default class CatalogStore {
   catalog?: Catalog;
-  dateSource?: DateSelectorSource[];
+  dateSource?: SelectOption[];
 
   constructor() {
     makeAutoObservable(this);
+  }
+
+  get villages(): SelectOption[] | undefined {
+    return this.catalog?.villages.map((village) => {
+      return { key: village.id, text: village.name, value: village.id } as SelectOption;
+    });
+  }
+
+  get filteredStages(): SelectOption[] | undefined {
+    const selectedVillages = store.filterStore.selectedVillages;
+    const stages = this.catalog?.stages.filter((s) => selectedVillages.indexOf(s.village.id) >= 0);
+    return stages?.map((stage) => {
+      return { key: stage.id, text: stage.name, value: stage.id } as SelectOption;
+    });
   }
 
   loadCatalogs = async () => {
@@ -38,7 +48,7 @@ export default class CatalogStore {
           key: format(date, "yyyy-MM-dd"),
           value: format(date, "yyyy-MM-dd"),
           text: format(date, "EEEE (LLL. d.)"),
-        } as DateSelectorSource;
+        } as SelectOption;
       }),
     ];
   };

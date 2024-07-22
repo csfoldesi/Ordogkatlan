@@ -5,8 +5,7 @@ import { store } from "./store";
 import agent from "../api/agent";
 
 export default class ProgramStore {
-  programListMap = new Map<string, ProgramDTO>();
-  groupedProgramList: ProgramDTO[] = [];
+  programList: ProgramDTO[] = [];
   pagination: Pagination | null = null;
   pagingParams = new PagingParams();
   isLoading = false;
@@ -17,6 +16,10 @@ export default class ProgramStore {
 
   setPagingParams = (pagingParams: PagingParams) => {
     this.pagingParams = pagingParams;
+  };
+
+  resetPagingParams = () => {
+    this.pagingParams = new PagingParams();
   };
 
   get axiosParamsWithFilters() {
@@ -31,6 +34,9 @@ export default class ProgramStore {
     });
     if (store.filterStore.selectedDate) {
       params.append("date", store.filterStore.selectedDate!.toISOString());
+    }
+    if (store.filterStore.searchText) {
+      params.append("searchText", store.filterStore.searchText);
     }
     return params;
   }
@@ -50,18 +56,14 @@ export default class ProgramStore {
     try {
       if (clearProgramList) {
         this.setPagingParams(new PagingParams());
-        this.groupedProgramList = [];
+        this.programList = [];
       }
       const result = await agent.Programs.list(this.axiosParamsWithFilters);
       runInAction(() => {
         let i = result.pagination.currentPage * result.pagination.itemsPerPage;
         result.data.forEach((program) => {
-          this.groupedProgramList[i] = program;
+          this.programList[i] = program;
           i++;
-          /*if (!this.programListMap.get(program.performanceId)) {
-            this.programListMap.set(program.performanceId, program);
-            this.groupedProgramList.push(program);
-          }*/
         });
         this.pagination = result.pagination;
       });
@@ -70,16 +72,25 @@ export default class ProgramStore {
     }
   };
 
-  /*loadMyPrograms = async () => {
+  loadSelectedPrograms = async (clearProgramList = false) => {
     try {
+      if (clearProgramList) {
+        this.setPagingParams(new PagingParams());
+        this.programList = [];
+      }
       const result = await agent.Programs.my(this.axiosParams);
       runInAction(() => {
-        //this.programList = result.data;
+        let i = result.pagination.currentPage * result.pagination.itemsPerPage;
+        result.data.forEach((program) => {
+          this.programList[i] = program;
+          i++;
+        });
+        this.pagination = result.pagination;
       });
     } catch (error) {
       console.error(error);
     }
-  };*/
+  };
 
   toggleProgramSelect = async (program: ProgramDTO) => {
     this.isLoading = true;

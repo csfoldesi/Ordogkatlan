@@ -8,5 +8,5 @@ export enum FormStatus {
 export enum ProgramListType {
   Now,
   All,
-  My,
+  Selected,
 }

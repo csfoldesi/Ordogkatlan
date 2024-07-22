@@ -13,20 +13,33 @@ interface Props {
 
 export default observer(function ProgramList({ type }: Props) {
   const { programStore } = useStore();
-  const { groupedProgramList, loadPrograms, pagination, setPagingParams, hasNextPage } = programStore;
+  const {
+    programList: groupedProgramList,
+    loadPrograms,
+    loadSelectedPrograms,
+    pagination,
+    setPagingParams,
+    hasNextPage,
+  } = programStore;
 
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (type === ProgramListType.All) {
-      loadPrograms();
+      loadPrograms(true);
+    } else if (type === ProgramListType.Selected) {
+      loadSelectedPrograms(true);
     }
-  }, [type, loadPrograms]);
+  }, [type, loadPrograms, loadSelectedPrograms]);
 
   const loadMore = () => {
     setLoading(true);
     setPagingParams(new PagingParams(pagination!.currentPage + 1, pagination?.itemsPerPage));
-    loadPrograms().then(() => setLoading(false));
+    if (type === ProgramListType.All) {
+      loadPrograms().then(() => setLoading(false));
+    } else if (type === ProgramListType.Selected) {
+      loadSelectedPrograms().then(() => setLoading(false));
+    }
   };
 
   const [infiniteRef] = useInfiniteScroll({

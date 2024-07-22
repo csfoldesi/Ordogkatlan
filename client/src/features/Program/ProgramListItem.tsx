@@ -36,7 +36,15 @@ export default observer(function ProgramListItem({ program }: Props) {
   return (
     <>
       <Item>
-        <Item.Image src={imageUrl()} size="medium" />
+        <Item.Image
+          src={imageUrl()}
+          size="medium"
+          label={
+            program.isTicketed
+              ? { color: "red", corner: "right", icon: "ticket", size: "medium", title: "Sorszámos" }
+              : {}
+          }
+        />
         <Item.Content>
           <Item.Header>
             {program.title}
@@ -49,15 +57,22 @@ export default observer(function ProgramListItem({ program }: Props) {
             )}
           </Item.Header>
           <Item.Meta>
-            {format(program.date, "EEEE (LLL. d.) ")}
-            {program.startTime ? format(program.startTime, "HH:mm") : ""}
-            {program.endTime ? format(program.endTime, "-HH:mm") : ""}
+            <span>
+              {format(program.date, "EEEE (LLL. d.) ")}
+              {program.startTime ? format(program.startTime, "HH:mm") : ""}
+              {program.endTime ? format(program.endTime, "-HH:mm") : ""}
+            </span>
+            <Label active>{program.villageName}</Label> {program.stageName}
           </Item.Meta>
           <Item.Description>
             <TextWithLineBreaks>{program.description}</TextWithLineBreaks>
           </Item.Description>
           <Item.Extra>
-            <Label active>{program.villageName}</Label> {program.stageName}
+            {program.genres.map((genre) => (
+              <Label key={genre.id} color="teal">
+                {genre.name}
+              </Label>
+            ))}
           </Item.Extra>
         </Item.Content>
       </Item>

@@ -1,3 +1,5 @@
+import { GenreDTO } from "./genre";
+
 export interface ProgramDTO {
   id: string;
   title: string;
@@ -13,4 +15,6 @@ export interface ProgramDTO {
   stageId: string;
   stageName: string;
   isSelected: boolean;
+  isTicketed: boolean;
+  genres: GenreDTO[];
 }
