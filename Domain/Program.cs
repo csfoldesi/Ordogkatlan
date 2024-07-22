@@ -10,5 +10,9 @@ public class Program
 
     public string? Thumbnail { get; set; }
 
-    public List<TimeTable> TimeTables { get; set; } = new List<TimeTable>();
+    public List<TimeTable> TimeTables { get; set; } = [];
+
+    public bool IsTicketed { get; set; }
+
+    public List<Genre> Genres { get; set; } = [];
 }

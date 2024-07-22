@@ -29,4 +29,8 @@ public class ProgramListItemDTO
     public required string StageName { get; set; }
 
     public bool IsSelected { get; set; }
+
+    public bool IsTicketed { get; set; }
+
+    public List<GenreDTO> Genres { get; set; } = [];
 }

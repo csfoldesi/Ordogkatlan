@@ -11,7 +11,6 @@ namespace Persistence
         public DbSet<Program> Programs { get; set; }
         public DbSet<TimeTable> TimeTables { get; set; }
         public DbSet<UserTimetable> UserTimeTables { get; set; }
-
         public DbSet<Genre> Genres { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -29,6 +28,9 @@ namespace Persistence
                 .HasOne(ut => ut.TimeTable)
                 .WithMany(t => t.UserTimetables)
                 .HasForeignKey(ut => ut.TimetableId);
+
+            builder.Entity<Program>().HasMany(p => p.Genres).WithMany(g => g.Programs);
+            //builder.Entity<Genre>().HasMany(g => g.Programs).WithMany(p => p.Genres);
         }
     }
 }

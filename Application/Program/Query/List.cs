@@ -42,6 +42,10 @@ public class List
             {
                 query = query.Where(x => x.Date == request.Params.Date.Value);
             }
+            else
+            {
+                query = query.Where(x => x.EndTime >= DateTime.Now);
+            }
             if (request.Params.Village.Count() > 0)
             {
                 query = query.Where(x => request.Params.Village.Contains(x.VillageId));

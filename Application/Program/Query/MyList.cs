@@ -49,13 +49,14 @@ public class MyList
                 .OrderBy(x => x!.StartTime)
                 .ProjectTo<ProgramListItemDTO>(_mapper.ConfigurationProvider);
 
-            return Result<PagedList<ProgramListItemDTO>>.Success(
-                await PagedList<ProgramListItemDTO>.CreateAsync(
-                    query,
-                    request.Params.PageNumber,
-                    request.Params.PageSize
-                )
+            var pagedList = await PagedList<ProgramListItemDTO>.CreateAsync(
+                query,
+                request.Params.PageNumber,
+                request.Params.PageSize
             );
+            pagedList.ForEach(item => item.IsSelected = true);
+
+            return Result<PagedList<ProgramListItemDTO>>.Success(pagedList);
         }
     }
 }

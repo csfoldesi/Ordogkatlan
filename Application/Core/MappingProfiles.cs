@@ -18,6 +18,10 @@ public class MappingProfiles : Profile
             .ForMember(d => d.StageId, o => o.MapFrom(s => s.Stage.Id))
             .ForMember(d => d.StageName, o => o.MapFrom(s => s.Stage.Name))
             .ForMember(d => d.VillageId, o => o.MapFrom(s => s.Stage.Village.Id))
-            .ForMember(d => d.VillageName, o => o.MapFrom(s => s.Stage.Village.Name));
+            .ForMember(d => d.VillageName, o => o.MapFrom(s => s.Stage.Village.Name))
+            .ForMember(d => d.IsTicketed, o => o.MapFrom(s => s.Program.IsTicketed))
+            .ForMember(d => d.Genres, o => o.MapFrom(s => s.Program.Genres));
+
+        CreateMap<Genre, GenreDTO>();
     }
 }

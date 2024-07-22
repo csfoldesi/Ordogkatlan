@@ -74,10 +74,22 @@ public class Download
             }
             _dataContext.SaveChanges();
 
+            foreach (var item in _dataContext.UserTimeTables)
+            {
+                _dataContext.UserTimeTables.Remove(item);
+            }
+            _dataContext.SaveChanges();
+
+            var genres = programDTO.data.controls.genres.Select(x => x.id).ToList();
+
             foreach (var item in programDTO.data.centerpiece)
             {
-                var id = item.productionId;
+                var id = item.productionId!.Split("/")[^1];
                 var description = item.description;
+                var programGenres = item.labels
+                    ?.Where(x => genres.Contains(x.href.Split("/")[^1]))
+                    .Select(x => x.href.Split("/")[^1])
+                    .ToList() ?? [];
                 DateTime? startTime = null;
                 DateTime? endTime = null;
                 int? duration = null;
@@ -121,7 +133,9 @@ public class Download
                         Id = id!,
                         Title = item.title!,
                         Description = StripHtml(description ?? ""),
-                        Thumbnail = item.thumbnail?.web
+                        Thumbnail = item.thumbnail?.web,
+                        IsTicketed = item.ticketed != null,
+                        Genres = [.. _dataContext.Genres.Where(x => programGenres.Contains(x.Id))],
                     };
                     _dataContext.Programs.Add(program);
                     _dataContext.SaveChanges();
