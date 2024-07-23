@@ -53,13 +53,14 @@ export default class ProgramStore {
   }
 
   loadPrograms = async (clearProgramList = false) => {
+    this.isLoading = true;
     try {
-      if (clearProgramList) {
-        this.setPagingParams(new PagingParams());
-        this.programList = [];
-      }
       const result = await agent.Programs.list(this.axiosParamsWithFilters);
       runInAction(() => {
+        if (clearProgramList) {
+          this.setPagingParams(new PagingParams());
+          this.programList = [];
+        }
         let i = result.pagination.currentPage * result.pagination.itemsPerPage;
         result.data.forEach((program) => {
           this.programList[i] = program;
@@ -69,6 +70,10 @@ export default class ProgramStore {
       });
     } catch (error) {
       console.error(error);
+    } finally {
+      runInAction(() => {
+        this.isLoading = false;
+      });
     }
   };
 

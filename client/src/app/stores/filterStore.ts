@@ -18,7 +18,6 @@ export default class FilterStore {
 
   selectDate = (dateString?: string) => {
     this.selectedDate = dateString ? new Date(Date.parse(dateString)) : undefined;
-    console.log(this.selectedDate);
   };
 
   selectVillageToggle = (id: string) => {

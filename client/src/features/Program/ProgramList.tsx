@@ -1,5 +1,5 @@
 import { useStore } from "../../app/stores/store";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import ProgramListItem from "./ProgramListItem";
 import { Item, ItemGroup, Loader } from "semantic-ui-react";
@@ -13,16 +13,8 @@ interface Props {
 
 export default observer(function ProgramList({ type }: Props) {
   const { programStore } = useStore();
-  const {
-    programList: groupedProgramList,
-    loadPrograms,
-    loadSelectedPrograms,
-    pagination,
-    setPagingParams,
-    hasNextPage,
-  } = programStore;
-
-  const [loading, setLoading] = useState(false);
+  const { programList, loadPrograms, loadSelectedPrograms, pagination, setPagingParams, hasNextPage, isLoading } =
+    programStore;
 
   useEffect(() => {
     if (type === ProgramListType.All) {
@@ -33,28 +25,24 @@ export default observer(function ProgramList({ type }: Props) {
   }, [type, loadPrograms, loadSelectedPrograms]);
 
   const loadMore = () => {
-    setLoading(true);
     setPagingParams(new PagingParams(pagination!.currentPage + 1, pagination?.itemsPerPage));
     if (type === ProgramListType.All) {
-      loadPrograms().then(() => setLoading(false));
+      loadPrograms();
     } else if (type === ProgramListType.Selected) {
-      loadSelectedPrograms().then(() => setLoading(false));
+      loadSelectedPrograms();
     }
   };
 
   const [infiniteRef] = useInfiniteScroll({
-    loading,
+    loading: isLoading,
     hasNextPage,
     onLoadMore: loadMore,
-    // `rootMargin` is passed to `IntersectionObserver`.
-    // We can use it to trigger 'onLoadMore' when the sentry comes near to become
-    // visible, instead of becoming fully visible on the screen.
     rootMargin: "0px 0px 400px 0px",
   });
 
   return (
     <ItemGroup>
-      {groupedProgramList.map((program) => (
+      {programList.map((program) => (
         <ProgramListItem program={program} key={program.performanceId} />
       ))}
       {hasNextPage && (

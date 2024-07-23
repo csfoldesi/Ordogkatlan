@@ -8,6 +8,12 @@ import { store } from "../stores/store";
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
+const sleep = (delay: number) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, delay);
+  });
+};
+
 axios.interceptors.request.use((config) => {
   const token = store.commonStore.token;
   if (token) config.headers.Authorization = `Bearer ${token}`;
@@ -16,6 +22,7 @@ axios.interceptors.request.use((config) => {
 
 axios.interceptors.response.use(
   async (response) => {
+    if (process.env.NODE_ENV === "development") await sleep(1000);
     const pagination = response.headers["pagination"];
     if (pagination) {
       response.data = new PaginatedResult(response.data, JSON.parse(pagination));
