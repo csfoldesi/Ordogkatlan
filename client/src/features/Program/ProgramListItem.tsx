@@ -7,7 +7,7 @@ import { useStore } from "../../app/stores/store";
 import { observer } from "mobx-react-lite";
 
 interface Props {
-  program: ProgramDTO;
+  program?: ProgramDTO;
 }
 
 const baseImageUrl = process.env.REACT_APP_BASE_IMAGE_URL;
@@ -16,7 +16,7 @@ export default observer(function ProgramListItem({ program }: Props) {
   const { accoutStore, programStore } = useStore();
   const { isLoggedIn } = accoutStore;
 
-  const imageUrl = () => (program.thumbnail ? baseImageUrl + program.thumbnail : placeholderImage);
+  const imageUrl = () => (program?.thumbnail ? baseImageUrl + program.thumbnail : placeholderImage);
 
   const handleFavoriteClick = (program: ProgramDTO) => {
     programStore.toggleProgramSelect(program);
@@ -32,6 +32,10 @@ export default observer(function ProgramListItem({ program }: Props) {
       color: "#ffb70a",
     },
   };
+
+  if (!program) {
+    return null;
+  }
 
   return (
     <>
