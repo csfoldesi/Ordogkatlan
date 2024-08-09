@@ -9,6 +9,7 @@ export default class ProgramStore {
   pagination: Pagination | null = null;
   pagingParams = new PagingParams();
   isLoading = false;
+  isNextLoading = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -18,8 +19,11 @@ export default class ProgramStore {
     this.pagingParams = pagingParams;
   };
 
-  resetPagingParams = () => {
+  resetPagination = () => {
     this.pagingParams = new PagingParams();
+    if (this.pagination) {
+      this.pagination!.currentPage = 0;
+    }
   };
 
   get axiosParamsWithFilters() {
@@ -52,6 +56,14 @@ export default class ProgramStore {
     return !!this.pagination && this.pagination.currentPage + 1 < this.pagination!.totalPages;
   }
 
+  loadNextPrograms = async () => {
+    this.isNextLoading = true;
+    await this.loadPrograms(false);
+    runInAction(() => {
+      this.isNextLoading = false;
+    });
+  };
+
   loadPrograms = async (clearProgramList = false) => {
     this.isLoading = true;
     try {
@@ -77,6 +89,14 @@ export default class ProgramStore {
     }
   };
 
+  loadNextSelectedPrograms = async () => {
+    this.isNextLoading = true;
+    await this.loadSelectedPrograms(false);
+    runInAction(() => {
+      this.isNextLoading = false;
+    });
+  };
+
   loadSelectedPrograms = async (clearProgramList = false) => {
     try {
       if (clearProgramList) {
@@ -98,7 +118,7 @@ export default class ProgramStore {
   };
 
   toggleProgramSelect = async (program: ProgramDTO) => {
-    this.isLoading = true;
+    //this.isLoading = true;
     try {
       await agent.Programs.select(program.performanceId);
       runInAction(() => {
@@ -107,7 +127,7 @@ export default class ProgramStore {
     } catch (error) {
       console.error(error);
     } finally {
-      runInAction(() => (this.isLoading = false));
+      //runInAction(() => (this.isLoading = false));
     }
   };
 }
