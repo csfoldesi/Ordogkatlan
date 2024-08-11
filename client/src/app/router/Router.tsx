@@ -7,6 +7,7 @@ import Login from "../../features/account/login";
 import SelectedProgramList from "../../features/program/SelectedProgramList";
 import NowProgramList from "../../features/program/NowProgramList";
 import Program from "../../features/program/Program";
+import ProgramListTest from "../../features/program/ProgramListTest";
 
 export const routes: RouteObject[] = [
   {
@@ -18,6 +19,7 @@ export const routes: RouteObject[] = [
         children: [{ path: "selected-program", element: <SelectedProgramList /> }],
       },
       { path: "program", element: <Program /> },
+      { path: "test", element: <ProgramListTest /> },
       { path: "register", element: <Register /> },
       { path: "login/:token", element: <Login /> },
       { path: "not-found", element: <NotFound /> },

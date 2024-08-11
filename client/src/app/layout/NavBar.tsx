@@ -16,6 +16,9 @@ export default observer(function NavBar() {
         <Menu.Item as={NavLink} to="/program">
           Program
         </Menu.Item>
+        <Menu.Item as={NavLink} to="/test">
+          Test
+        </Menu.Item>
         {isLoggedIn ? (
           <Menu.Item as={NavLink} to="/selected-program">
             Saját program

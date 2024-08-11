@@ -3,8 +3,9 @@ import { ProgramDTO } from "../models/program";
 import { Pagination, PagingParams } from "../models/pagination";
 import { store } from "./store";
 import agent from "../api/agent";
+import { ListDataSource } from "../common/InfiniteList/listDataSource";
 
-export default class ProgramStore {
+export default class ProgramStore implements ListDataSource<ProgramDTO> {
   programList: ProgramDTO[] = [];
   pagination: Pagination | null = null;
   pagingParams = new PagingParams();
@@ -14,6 +15,19 @@ export default class ProgramStore {
   constructor() {
     makeAutoObservable(this);
   }
+
+  loadNextPage = async () => {
+    this.setPagingParams(new PagingParams(this.pagination!.currentPage + 1, this.pagination?.itemsPerPage));
+    await this.loadPrograms(false);
+  };
+
+  get itemsCount() {
+    return this.programList.length;
+  }
+
+  itemAtIndex = (index: number): ProgramDTO => {
+    return this.programList[index];
+  };
 
   setPagingParams = (pagingParams: PagingParams) => {
     this.pagingParams = pagingParams;
