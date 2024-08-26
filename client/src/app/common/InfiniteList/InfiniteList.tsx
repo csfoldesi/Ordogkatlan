@@ -1,15 +1,15 @@
-import { observer } from "mobx-react-lite";
 import { ListDataSource } from "./listDataSource";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-interface Props<T> {
+type Props<T> = {
   dataSource: ListDataSource<T>;
   children: (item: T, index: number) => JSX.Element;
   loader?: JSX.Element;
-}
+};
 
-export default observer(function InfiniteList<T>({ dataSource, children, loader }: Props<T>) {
-  const { itemsCount, itemAtIndex, hasNextPage, loadNextPage } = dataSource;
+export default function InfiniteList<T>({ dataSource, children, loader }: Props<T>) {
+  const { hasNextPage, loadNextPage } = dataSource;
+  const [data, setData] = useState(Array<T>);
   const [isLoading, setIsLoading] = useState(false);
   const loaderRef = useRef(null);
 
@@ -18,9 +18,10 @@ export default observer(function InfiniteList<T>({ dataSource, children, loader 
 
     setIsLoading(true);
     loadNextPage().then(() => {
+      setData(dataSource.data);
       setIsLoading(false);
     });
-  }, [isLoading, hasNextPage, loadNextPage]);
+  }, [isLoading, hasNextPage, loadNextPage, dataSource]);
 
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
@@ -51,10 +52,16 @@ export default observer(function InfiniteList<T>({ dataSource, children, loader 
     }
   };
 
-  return (
+  /*return (
     <>
       {Array.from({ length: itemsCount }, (_, i) => i).map((index) => children(itemAtIndex(index), index))}
       <div ref={loaderRef}>{renderLoader()}</div>
     </>
+  );*/
+  return (
+    <>
+      {data.map((item, index) => children(item, index))}
+      <div ref={loaderRef}>{renderLoader()}</div>
+    </>
   );
-});
+}

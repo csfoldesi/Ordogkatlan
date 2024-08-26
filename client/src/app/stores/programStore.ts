@@ -3,9 +3,8 @@ import { ProgramDTO } from "../models/program";
 import { Pagination, PagingParams } from "../models/pagination";
 import { store } from "./store";
 import agent from "../api/agent";
-import { ListDataSource } from "../common/InfiniteList/listDataSource";
 
-export default class ProgramStore implements ListDataSource<ProgramDTO> {
+export default class ProgramStore {
   programList: ProgramDTO[] = [];
   pagination: Pagination | null = null;
   pagingParams = new PagingParams();
